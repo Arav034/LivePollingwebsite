@@ -56,121 +56,229 @@ function CreatePollPage() {
 
   if (pollLink) {
     return (
-      <div style={{ maxWidth: 600, margin: "40px auto", fontFamily: "sans-serif" }}>
-        <h2>Poll created!</h2>
-        <p>Share this link with others:</p>
-        <input
-          type="text"
-          readOnly
-          value={pollLink}
-          style={{ width: "100%", padding: 10, marginBottom: 12 }}
-        />
-        <button
-          onClick={() => navigator.clipboard.writeText(pollLink)}
-          style={{ marginRight: 8, padding: 10, cursor: "pointer" }}
-        >
-          Copy link
-        </button>
-        <button
-          onClick={() => window.open(pollLink, "_blank")}
-          style={{ marginRight: 8, padding: 10, cursor: "pointer" }}
-        >
-          Open poll
-        </button>
-        <button
-          onClick={() => {
-            setPollLink("");
-            setTitle("");
-            setOptions(["", ""]);
-          }}
-          style={{ padding: 10, cursor: "pointer" }}
-        >
-          Create another
-        </button>
-        <button
-          onClick={() => {
-            logoutUser();
-            navigate("/");
-          }}
-          style={{ float: "right", padding: 10, cursor: "pointer" }}
-        >
-          Log out
-        </button>
+      <div style={styles.container}>
+        <div style={styles.card}>
+          <div style={{ textAlign: "center", marginBottom: 32 }}>
+            <div style={styles.successIcon}>✓</div>
+            <h2 style={{ fontSize: 28, marginBottom: 8 }}>Poll created!</h2>
+            <p style={{ color: "#666" }}>Share this link with others to collect votes</p>
+          </div>
+
+          <div style={styles.linkBox}>
+            <input
+              type="text"
+              readOnly
+              value={pollLink}
+              style={styles.linkInput}
+            />
+            <button
+              onClick={() => navigator.clipboard.writeText(pollLink)}
+              style={{ ...styles.button, marginBottom: 12 }}
+            >
+              📋 Copy link
+            </button>
+            <button
+              onClick={() => window.open(pollLink, "_blank")}
+              style={{ ...styles.button, marginBottom: 12, background: "#27ae60" }}
+            >
+              👁 Open poll
+            </button>
+          </div>
+
+          <button
+            onClick={() => {
+              setPollLink("");
+              setTitle("");
+              setOptions(["", ""]);
+            }}
+            style={{ ...styles.button, marginBottom: 12 }}
+          >
+            ➕ Create another
+          </button>
+
+          <button
+            onClick={() => {
+              logoutUser();
+              navigate("/");
+            }}
+            style={{ ...styles.button, background: "#95a5a6" }}
+          >
+            Logout
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
-    <div style={{ maxWidth: 600, margin: "40px auto", fontFamily: "sans-serif" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <h2>Create a poll</h2>
-        <button
-          onClick={() => {
-            logoutUser();
-            navigate("/");
-          }}
-          style={{ padding: "8px 16px", cursor: "pointer" }}
-        >
-          Log out
-        </button>
-      </div>
-
-      <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: 16 }}>
-          <label>Poll question</label>
-          <br />
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="e.g., Best programming language?"
-            style={{ width: "100%", padding: 8, marginTop: 4 }}
-          />
-        </div>
-
-        <div style={{ marginBottom: 16 }}>
-          <label>Options</label>
-          {options.map((option, index) => (
-            <div key={index} style={{ display: "flex", gap: 8, marginTop: 8 }}>
-              <input
-                type="text"
-                value={option}
-                onChange={(e) => updateOption(index, e.target.value)}
-                placeholder={`Option ${index + 1}`}
-                style={{ flex: 1, padding: 8 }}
-              />
-              {options.length > 2 && (
-                <button
-                  type="button"
-                  onClick={() => removeOption(index)}
-                  style={{ padding: "8px 12px", cursor: "pointer" }}
-                >
-                  Remove
-                </button>
-              )}
-            </div>
-          ))}
+    <div style={styles.container}>
+      <div style={styles.card}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 32 }}>
+          <div>
+            <h1 style={styles.title}>Create a poll</h1>
+            <p style={{ color: "#666", fontSize: 14 }}>Ask a question and collect real-time votes</p>
+          </div>
           <button
-            type="button"
-            onClick={addOption}
-            style={{ marginTop: 8, padding: "8px 16px", cursor: "pointer" }}
+            onClick={() => {
+              logoutUser();
+              navigate("/");
+            }}
+            style={{ ...styles.button, background: "#95a5a6", width: "auto", padding: "8px 16px" }}
           >
-            + Add option
+            Logout
           </button>
         </div>
 
-        {error && <p style={{ color: "red" }}>{error}</p>}
+        <form onSubmit={handleSubmit}>
+          <div style={styles.formGroup}>
+            <label style={styles.label}>Poll question</label>
+            <input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="What's your question?"
+              style={styles.input}
+            />
+          </div>
 
-        <button
-          type="submit"
-          disabled={loading}
-          style={{ width: "100%", padding: 12, cursor: "pointer", fontSize: 16 }}
-        >
-          {loading ? "Creating..." : "Create poll"}
-        </button>
-      </form>
+          <div style={styles.formGroup}>
+            <label style={styles.label}>Options</label>
+            {options.map((option, index) => (
+              <div key={index} style={{ display: "flex", gap: 8, marginBottom: 12 }}>
+                <input
+                  type="text"
+                  value={option}
+                  onChange={(e) => updateOption(index, e.target.value)}
+                  placeholder={`Option ${index + 1}`}
+                  style={{ ...styles.input, flex: 1 }}
+                />
+                {options.length > 2 && (
+                  <button
+                    type="button"
+                    onClick={() => removeOption(index)}
+                    style={{ ...styles.button, width: "auto", padding: "10px 16px", background: "#e74c3c" }}
+                  >
+                    ✕
+                  </button>
+                )}
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={addOption}
+              style={{ ...styles.button, width: "100%", background: "#95a5a6" }}
+            >
+              + Add option
+            </button>
+          </div>
+
+          {error && <p style={styles.error}>{error}</p>}
+
+          <button
+            type="submit"
+            disabled={loading}
+            style={{ ...styles.button, fontSize: 16, padding: "14px 16px" }}
+          >
+            {loading ? "Creating..." : "🚀 Create poll"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
+
+const styles = {
+  container: {
+    padding: 16,
+    minHeight: "100vh",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  card: {
+    background: "white",
+    borderRadius: 12,
+    boxShadow: "0 10px 40px rgba(0, 0, 0, 0.15)",
+    padding: 40,
+    width: "100%",
+    maxWidth: 600,
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: "bold",
+    color: "#667eea",
+    marginBottom: 8,
+    marginLeft:-100,
+  },
+  formGroup: {
+    marginBottom: 20,
+  },
+  label: {
+    display: "block",
+    fontSize: 14,
+    fontWeight: 600,
+    marginBottom: 8,
+    color: "#333",
+  },
+   input: {
+  width: "100%",
+  padding: "12px 16px",
+  border: "2px solid #e0e0e0",
+  borderRadius: 8,
+  fontSize: 14,
+  outline: "none",
+  color: "#333",
+  background: "white",
+},
+  button: {
+    width: "100%",
+    padding: "12px 16px",
+    background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+    color: "white",
+    border: "none",
+    borderRadius: 8,
+    fontSize: 14,
+    fontWeight: 600,
+    cursor: "pointer",
+    transition: "transform 0.2s",
+  },
+  error: {
+    color: "#e74c3c",
+    fontSize: 14,
+    marginBottom: 16,
+    fontWeight: 500,
+  },
+  linkBox: {
+    background: "#f8f9fa",
+    padding: 16,
+    borderRadius: 8,
+    marginBottom: 16,
+    border: "1px solid #e0e0e0",
+  },
+  linkInput: {
+    width: "100%",
+    padding: "12px 16px",
+    border: "2px solid #e0e0e0",
+    borderRadius: 8,
+    fontSize: 13,
+    marginBottom: 16,
+    fontFamily: "monospace",
+    color: "#333",
+    background: "white",
+  },
+  successIcon: {
+    width: 60,
+    height: 60,
+    background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+    color: "white",
+    fontSize: 32,
+    fontWeight: "bold",
+    borderRadius: "50%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    margin: "0 auto 16px",
+  },
+};
 
 export default CreatePollPage;
