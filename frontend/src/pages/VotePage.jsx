@@ -26,9 +26,9 @@ function VotePage() {
     fetchPoll();
   }, [id]);
 
-  useEffect(() => {
-    if (!poll) return;
-    const ws = new WebSocket(`wss://live-polling-backend-3x70.onrender.com/api/polls/${id}/live`);
+ useEffect(() => {
+  if (!poll) return;
+  const ws = new WebSocket(`wss://live-polling-backend-3x70.onrender.com/api/polls/${id}/live`);
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
       setPoll((prev) => ({ ...prev, results: data.results }));
