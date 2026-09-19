@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Single place to change when you deploy the backend later —
 // swap this to your live backend URL and nothing else needs to change.
-const API_BASE_URL = "http://localhost:8080";
+const API_BASE_URL = "https://live-polling-backend-3x70.onrender.com/";
 
 const api = axios.create({
   baseURL: API_BASE_URL,
